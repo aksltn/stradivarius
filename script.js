@@ -1,6 +1,7 @@
 // Variables
 const canvasWidth = 500;
 const canvasHeight = 500;
+const pixelSize = 10;
 
 // Element selection
 const canvas = document.getElementById('canvas');
@@ -13,8 +14,6 @@ const ctx = canvas.getContext('2d');
 // Dimensioning
 const pixelHeight = canvas.height;
 const pixelWidth = canvas.width;    
-
-const pixelSize = 10;
 
 const gridHeight = pixelHeight / pixelSize;
 const gridWidth = pixelWidth / pixelSize;   
