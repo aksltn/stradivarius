@@ -12,15 +12,15 @@ const images = {
     "red" : [],
     "white" : [],  
     "blue" : [],
-    "yellow" : [],
     "multicolor" : []
 };
+
 // Setup
 const canvasWidth = gridWidth * pixelSize;
 const canvasHeight = gridHeight * pixelSize;
 
 function setup() {
-    createCanvas(canvasWidth, canvasHeight, document.getElementById('canvas'));
+    createCanvas(canvasWidth, canvasHeight);
     noLoop();
     noiseDetail(n_lod, n_falloff);
 }
@@ -30,57 +30,34 @@ function draw() {
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
             let data = noise(x * noiseScale, y * noiseScale);
+
+            console.log(data);
             
-            let img = fill(data);
+            fill(assign(data));
+            
+            noStroke();
 
-            let srcX = floor(random(img.width - pixelSize));
-            let srcY = floor(random(img.height - pixelSize));
-
-            image(img, x * pixelSize, y * pixelSize, pixelSize, pixelSize, srcX, srcY, pixelSize, pixelSize);
-
-            // console.log(data);
-
-            /* 
-            if (data == 0 || data == 1) {
-                value = color("red");
-            } else if (data == 2 || data == 8 || data == 9) {
-                value = color("purple");
-            } else if (data == 4 || data == 7 || data == 3) {
-                value = color("blue");
-            } else if (data == 6 || data == 5) {
-                value = color("magenta");
-            } else {
-                value = color("white");
-            }
-            */
+            rect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
         }
     }
 }
 
-function preload() {
-    Object.keys(images).forEach(img => {
-        for (let i = 0; i < 3; i++) {
-            images[img].push(loadImage(`assets/${img}/${img}-${i}.jpg`));
-        }
-    });
-}
-
-function fill(d) {
-    // Pick color
-    let color = Math.round((d * 100) % 5); 
-    let img = Math.round((d * 100) % 3);
-
-    console.log(color, img);
-
-    if (color == 0) {
-        return images["red"][img];
-    } else if (color == 1) {
-        return images["white"][img];
-    } else if (color == 2) {
-        return images["blue"][img];
-    } else if (color == 3) {
-        return images["yellow"][img];
+function assign(data) {
+    let col;
+    
+    if (data < 0.15) {
+        col = "blue";
+    } else if (data < 0.3) {
+        col = "red";
+    }
+    else if (data < 0.45) {
+        col = "white";
     } else {
-        return images["multicolor"][img];
+        col = "purple";
     }
+
+    return col;
 }
+
+setup();
+draw();
